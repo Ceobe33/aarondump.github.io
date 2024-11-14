@@ -1,0 +1,773 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>About Git</title>
+    <url>/%5Bobject%20Object%5D/2022/10/02/AboutGitundefined/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="Issue"><a href="#Issue" class="headerlink" title="Issue"></a>Issue</h2><h3 id="Authentication"><a href="#Authentication" class="headerlink" title="Authentication"></a>Authentication</h3><ul>
+<li>-<em>generate ssh key</em>*<br><code>$ ssh-keygen -t ed25519</code></li>
+</ul>
+<blockquote>
+<p>authenticate cmd<br><code>$ ssh -T git@github.com</code><br>Hi Coebe! You’ve successfully authenticated, -<em>but GitHub does not provide shell access</em>*.</p>
+</blockquote>
+<p>solve:<br>  <code>$ git remote set-url origin git@github.com:Coebe/pragmadump.git</code></p>
+<ul>
+<li><code>connection refused</code><br>fix:<ol>
+<li>check host<br><code>$ sudo vim /etc/hosts</code><br>add github.com ip hosts<br>check github ip connection:<br><code>ssh -T -p 443 git@140.82.114.36</code></li>
+</ol>
+<ul>
+<li><code>Failed to connect to raw.githubusercontent.com port 443 after 2 ms: Connection refused</code><br>  fix:  <ol>
+<li>add this config to host config file:<code>199.232.28.133 raw.githubusercontent.com</code></li>
+</ol>
+</li>
+<li><code>fatal: unable to access &#39;https://github.com/EpicGames/UnrealEngine.git/&#39;: OpenSSL SSL_read: Connection was reset, errno 10054</code><ol>
+<li> fix: <code>git config --global --add remote.origin.proxy &quot;&quot;</code></li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="Command"><a href="#Command" class="headerlink" title="Command"></a>Command</h3><ul>
+<li>open local git config<br><code>$ git config --local -e</code></li>
+<li>[same] -<em>Issue: not found repo</em>*<br>-<code>fatal: repository &#39;https://github.com/Coebe/aaroncode.git/&#39; not found</code>*</li>
+<li>[same] -<em>Issue:</em>*<br>-<code>$ git pull</code><br><code>fatal: unable to access &#39;https://github.com/Coebe/pragmadump.git/&#39;: OpenSSL SSL_connect: Connection was reset in connection to github.com:443</code>-<ul>
+<li>-<em>Fix:</em>*<br><code>$ git remote set-url origin git@github.com:Coebe/aaroncode.git</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="Timeout"><a href="#Timeout" class="headerlink" title="Timeout"></a>Timeout</h3><p><a href="https://bengsfort.github.io/articles/fixing-git-push-pull-timeout/">Fixing git push/pull timing out</a>  </p>
+<ul>
+<li>-<em>Issue:clone timeout</em>*<br>-<code>fatal: unable to access &#39;https://github.com/LunarVim/Neovim-from-scratch.git/&#39;: Failed to connect to github.com port 443 after 21057 ms: Timed out</code>*<ul>
+<li>-<em>Fix:</em>*<ul>
+<li>look up the latest github.com ip address: <a href="https://www.ipaddress.com/site/github.com">website</a></li>
+<li>add <code>000.000.000.000 github.com</code> append to <code>C:/Windows/System32/drivers/etc/hosts</code></li>
+<li>then complete</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>-<em>Issue:pull timeout</em>*<br>-<code>$ git pull</code><br><code>ssh: connect to host github.com port 22: Connection timed out</code><br><code>fatal: Could not read from remote repository.</code>-<ul>
+<li>-<em>Fix:</em>*<ul>
+<li>check permission when switch port<br><code>$ ssh -T -p 443 git@ssh.github.com</code></li>
+<li>succeed, then change ssh config file<br><code>vim ~/.ssh/config</code></li>
+<li>paste that save and exit<br><code>Host github.com</code><br><code>Hostname ssh.github.com</code><br><code>Port 443</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>-<em>Issue:push timeout</em>*<br>-<code>$ git push</code><br><code>fatal: unable to access &#39;https://github.com/Coebe/aaroncode.git/&#39;: Failed to connect to github.com port 443 after 21109 ms: Timed out</code>-<ul>
+<li>-<em>Fix:</em>*<ul>
+<li>reset/add remote repo<br><code>$ git remote add origin https://github.com/username.git/</code><br>other cmd<br>remove: <code>$ git remote remove &lt;name&gt;</code></li>
+<li>set push upstream<br><code>$ git push --set-upstream origin main</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>-<em>Issue:</em>* <em><code>fatal: unable to access &#39;https://github.com/Coebe/aaroncode.git/&#39;: Failed to connect to 192.168.10.120 port 7890 after 21039 ms: Timed out</code></em><ul>
+<li>-<em>Fix:</em>*</li>
+</ul>
+</li>
+<li>-<em>Issue:</em>*<br>-<code>$ git clone</code><br><code>fatal: unable to access &#39;https://github.com/ThePrimeagen/vim-be-good.git/&#39;: Failed to connect to 192.168.10.120 port 7890 after 21080 ms: Timed out</code>-<ul>
+<li>-<em>Fix:</em>*<ul>
+<li>proxy problem clear that all be fine<br><code>git config --global --unset http.xxx</code>  </li>
+<li>if wanna set proxy:<br><code>git config --global http.proxy http://xxx/</code><br>if needs account &amp; password -<em>don’t know meaning</em>*<br><code>git config --global http.proxy http://user:pwd@ipaddress:port</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="Secure-amp-Authentication"><a href="#Secure-amp-Authentication" class="headerlink" title="Secure &amp; Authentication"></a>Secure &amp; Authentication</h3><ul>
+<li>-<em>Issue: ssl</em>*<br><code>fatal: unable to access &#39;https://github.com/Coebe/aaroncode.git/&#39;: OpenSSL SSL_read: Connection was reset, errno 10054</code></li>
+<li>-<em>Fix:</em>*<br><code>$ git config --global http.sslVerify &quot;false&quot;</code></li>
+<li>Add SSH Key over GitHub<br>-Key is invalid. You must supply a key in OpenSSH public key format*<ul>
+<li>do not use PRIVATE key, use the <code>.pub</code> sub file (under directory: ~/.ssh/)</li>
+</ul>
+</li>
+</ul>
+<h3 id="Submodule"><a href="#Submodule" class="headerlink" title="Submodule"></a>Submodule</h3><p><img src="https://s2.loli.net/2022/11/02/iRJrgEc4mDWOPUT.png" alt="Submodule">this image mean has <code>.git</code> file in child directory, 然后GitHub就会把这个文件夹视为一个子系统模块,从而不能正常更新Git  </p>
+<p>solve step:</p>
+<ol>
+<li>delete child directory <code>.git</code> file.</li>
+<li>execute <code>git rm --cached [filename] // filename is the submodule directory</code>.</li>
+<li>execute <code>git add .</code>.</li>
+<li>execute <code>git commit</code>.</li>
+<li>execute <code>git push origin [branchName]</code>.</li>
+</ol>
+]]></content>
+      <tags>
+        <tag>Git</tag>
+        <tag>Note</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>The Step of Blog Construction</title>
+    <url>/%5Bobject%20Object%5D/2022/10/11/BlogConstructionundefined/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p><a href="https://app.netlify.com/sites/sprightly-croquembouche-951681/deploys"><img src="https://api.netlify.com/api/v1/badges/6417f999-72a6-4ebd-994d-0d5118d42bb3/deploy-status" alt="Netlify Status"></a>  </p>
+<h3 id="Using-Blog"><a href="#Using-Blog" class="headerlink" title="Using Blog"></a>Using Blog</h3><p>修改根配置文件的这个参数，：使用资源文件的文件展示<br>over config file change <code>post_asset_floder: true</code> parameter, then can use local path to config cover (maybe all the photo/img?)</p>
+<p><a href="https://hexo.io/zh-cn/docs/writing.html">official document</a><br>generate new blog file:<br><code>hexo new &lt;filename&gt;</code></p>
+<h4 id="Blog-Beauty"><a href="#Blog-Beauty" class="headerlink" title="Blog Beauty"></a>Blog Beauty</h4><ul>
+<li><p>cardInfo hover anim path</p>
+<p><code>themes\butterfly\source\css\_layout\aside.styl:55</code></p>
+</li>
+</ul>
+<h4 id="Scroll-Bar"><a href="#Scroll-Bar" class="headerlink" title="Scroll Bar"></a>Scroll Bar</h4><ol>
+<li><p>create css file<br>my path: <code>aaroncode\source\custom\scrollBar.css</code></p>
+</li>
+<li><p>using that css in <code>config.inject</code></p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="string">&lt;!--</span> <span class="string">_config.yml</span> <span class="string">--&gt;</span></span><br><span class="line"><span class="string">&lt;!--</span> <span class="string">context</span> <span class="string">--&gt;</span></span><br><span class="line"><span class="string">...</span></span><br><span class="line"><span class="attr">inject:</span></span><br><span class="line">  <span class="attr">head:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&lt;link</span> <span class="string">rel=&quot;stylesheet&quot;</span> <span class="string">href=&quot;/custom/scrollBar.css&quot;&gt;</span></span><br><span class="line">  <span class="attr">bottom:</span></span><br><span class="line">    <span class="comment"># - &lt;script src=&quot;xxxx&quot;&gt;&lt;/script&gt;</span></span><br><span class="line"><span class="string">...</span></span><br><span class="line"><span class="string">&lt;!--</span> <span class="string">context</span> <span class="string">--&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>modified css file to beauty scroll bar</p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line">&lt;!-- my config --&gt;</span><br><span class="line"> <span class="comment">/* 滚动条 */</span></span><br><span class="line"></span><br><span class="line"> <span class="comment">/* no effect about width setting */</span></span><br><span class="line"> ::-webkit-scrollbar &#123;</span><br><span class="line">     <span class="attribute">width</span>: <span class="number">8px</span>;</span><br><span class="line">     <span class="attribute">height</span>: <span class="number">8px</span>;</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> ::-webkit-scrollbar-track &#123;</span><br><span class="line">     <span class="attribute">background-color</span>: <span class="built_in">rgba</span>(<span class="number">160</span>, <span class="number">217</span>, <span class="number">255</span>, <span class="number">0.623</span>);</span><br><span class="line">     <span class="comment">/* border-radius: 100em; */</span></span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> <span class="comment">/* the bar */</span></span><br><span class="line"> ::-webkit-scrollbar-thumb &#123;</span><br><span class="line">     <span class="attribute">background-color</span>: <span class="built_in">rgb</span>(<span class="number">248</span>, <span class="number">156</span>, <span class="number">156</span>);</span><br><span class="line">     <span class="attribute">background-image</span>: <span class="built_in">-webkit-linear-gradient</span>(<span class="number">45deg</span>,</span><br><span class="line">             <span class="comment">/* render sequence is reverse */</span></span><br><span class="line">             <span class="built_in">rgb</span>(<span class="number">255</span>, <span class="number">149</span>, <span class="number">149</span>) <span class="number">10%</span>,</span><br><span class="line"></span><br><span class="line">             <span class="built_in">rgb</span>(<span class="number">155</span>, <span class="number">243</span>, <span class="number">255</span>) <span class="number">30%</span>,</span><br><span class="line">             <span class="built_in">rgb</span>(<span class="number">158</span>, <span class="number">156</span>, <span class="number">248</span>) <span class="number">50%</span>,</span><br><span class="line">             <span class="built_in">rgb</span>(<span class="number">155</span>, <span class="number">243</span>, <span class="number">255</span>) <span class="number">75%</span>,</span><br><span class="line"></span><br><span class="line">             transparent <span class="number">85%</span>,</span><br><span class="line">             transparent);</span><br><span class="line">     <span class="attribute">border-radius</span>: <span class="number">5em</span>;</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> ::-webkit-scrollbar-corner &#123;</span><br><span class="line">     <span class="attribute">background-color</span>: transparent;</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> <span class="comment">/* ::-moz-selection &#123;</span></span><br><span class="line"><span class="comment">     color: #fff;</span></span><br><span class="line"><span class="comment">     background-color: #00eeff;</span></span><br><span class="line"><span class="comment"> &#125; */</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="Issuse"><a href="#Issuse" class="headerlink" title="Issuse"></a>Issuse</h3><h3 id="Aout-post"><a href="#Aout-post" class="headerlink" title="Aout post"></a>Aout post</h3><p>在使用博客资源展示图片时如果使用github的路径为什么需要在链接末尾加上<code>?raw=true</code> ?</p>
+<h3 id="About-Connexity-连通性问题"><a href="#About-Connexity-连通性问题" class="headerlink" title="About Connexity 连通性问题"></a>About Connexity <del>连通性问题</del></h3><p>bug statement:<br>打开网站<code>HTTP ERROR 502</code>  </p>
+<p>solution:<br>原因是访问不到Hexo所指的服务, 也就是代理出现了问题, 查看Cloudflare DNS配置,并修改成 CNAME 模式(通过 Cloudflare 转发 [aaroncode].netlify.app)</p>
+<h4 id="About-Cache-缓存问题"><a href="#About-Cache-缓存问题" class="headerlink" title="About Cache 缓存问题"></a>About Cache <del>缓存问题</del></h4><p>bug statement:  </p>
+<blockquote>
+<p>extends includes/layout.pug block content include ./includes/mixins/post-ui.pug #recent-posts.recent-posts +postUI include includes/pagination.pug</p>
+</blockquote>
+<p>solution:  </p>
+<ol>
+<li>在hexo根目录执行命令：<br><code>npm install --save hexo-renderer-jade hexo-generator-feed hexo-generator-sitemap hexo-browsersync hexo-generator-archive</code>  </li>
+<li>清除缓存<br><code>hexo clean</code>  </li>
+<li>重新生成静态文件<br><code>hexo g</code>/<code>hexo generate</code></li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">code block example</span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
+    <title>C-CPPLearning</title>
+    <url>/%5Bobject%20Object%5D/2023/01/03/C-CPPLearningundefined/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="Data-Type"><a href="#Data-Type" class="headerlink" title="Data Type"></a>Data Type</h2><h3 id="Convert"><a href="#Convert" class="headerlink" title="Convert"></a>Convert</h3><ul>
+<li>string to int<br>bacause <code>atoi()</code> is C base function, and the parameter is char array<br>so firt step is convert <code>string</code> to <code>char[]</code>, and then..<ul>
+<li><code>int num = atoi(str.c_str());</code></li>
+</ul>
+</li>
+</ul>
+]]></content>
+      <tags>
+        <tag>Note</tag>
+        <tag>C/CPP</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>LearningHowToLearn</title>
+    <url>/%5Bobject%20Object%5D/2022/11/20/LearningHowToLearnundefined/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="Efficiency-learning"><a href="#Efficiency-learning" class="headerlink" title="Efficiency learning"></a>Efficiency learning</h2><p>在保证学习状态的情况下进行学习，学习效率会更高<br><del>连续看三集的话只能会想起这句..下次需要边看边记了</del></p>
+]]></content>
+      <tags>
+        <tag>Note</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>DOSBoxNote</title>
+    <url>/%5Bobject%20Object%5D/2022/12/27/DOSBoxNoteundefined/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="Construction"><a href="#Construction" class="headerlink" title="Construction"></a>Construction</h2><p><a href="https://youareaaron0.lanzoub.com/iVj4t00h3g7e">DOSBox software download link</a></p>
+<p><a href="https://lifesea.org/">application in DOSBox download link</a></p>
+<ol>
+<li>open DOSBox.exe</li>
+<li>Running specific program<ul>
+<li>In CMD:<br><code>mount c g:CAI</code>: <code>c</code> means to create virtual C directory and <code>g:CAI</code> means where is virtual directory’s location</li>
+<li>In Config:<br>loc:<code>C/User/Administrator/AppData/Local/DOSBox/dosbox-0.74.conf</code>  <ol>
+<li>over config file bottom type this:<br><code>mount c g:CAI</code><br><code>g:</code><br><code>CAI</code>  </li>
+<li>run the exe file</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>modified the <strong>window size</strong><ol>
+<li>open config file<br>top of context find <code>windowresolution=original</code>  </li>
+<li>change to <code>windowresolution=1920x1080</code></li>
+<li>then change next line <code>output=surface</code> to <code>output=openg1</code></li>
+</ol>
+</li>
+</ol>
+]]></content>
+      <tags>
+        <tag>DOSBox</tag>
+        <tag>Construction</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Markdown note</title>
+    <url>/%5Bobject%20Object%5D/2021/11/13/Markdownundefined/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="User-snippets’-command"><a href="#User-snippets’-command" class="headerlink" title="User snippets’ command"></a>User snippets’ command</h2><p><a href="https://chinese.freecodecamp.org/news/definitive-guide-to-snippets-visual-studio-code/">VS Code 代码片段</a></p>
+]]></content>
+      <tags>
+        <tag>Note</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Neovim note</title>
+    <url>/%5Bobject%20Object%5D/2023/05/02/Neovimundefined/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="Tutorials"><a href="#Tutorials" class="headerlink" title="Tutorials"></a>Tutorials</h2><ul>
+<li><a href="https://www.lanqiao.cn/courses/2840">蓝桥实验楼</a><ul>
+<li><a href="https://github.com/overmind1980/oeasyvim">github</a>, <a href="https://gitee.com/overmind1980/oeasyvim">gitee</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="knowledge"><a href="#knowledge" class="headerlink" title="knowledge"></a>knowledge</h2><p>everything be required which inside <code>lua/</code> directory</p>
+<h2 id="Install-Vim-on-Ubuntu"><a href="#Install-Vim-on-Ubuntu" class="headerlink" title="Install Vim on Ubuntu"></a>Install Vim on Ubuntu</h2><ol>
+<li><a href="https://learn.microsoft.com/en-us/windows/wsl/install">install windows virtual Linux</a> then</li>
+<li>install nvim on Ubuntu <a href="https://linux.how2shout.com/3-ways-to-install-neovim-on-ubuntu-22-04-or-20-04">3 Ways to install NeoVim on Ubuntu 22.04 or 20.04</a></li>
+</ol>
+<ul>
+<li>official<a href="https://github.com/neovim/neovim/wiki/Building-Neovim">link</a><ol>
+<li>install requirements<br><code>sudo apt-get install ninja-build gettext cmake unzip curl</code></li>
+</ol>
+</li>
+<li>maybe have some issue about Hyper-V<ol>
+<li><a href="https://learn.microsoft.com/en-us/virtualization/hyper-v-on-windows/about/">win10</a>&#x20;</li>
+<li><a href="https://techcommunity.microsoft.com/t5/educator-developer-blog/step-by-step-enabling-hyper-v-for-use-on-windows-11/ba-p/3745905">win11</a><ol>
+<li>you may need to learn <a href="https://learn.microsoft.com/zh-cn/training/modules/configure-manage-hyper-v/?WT.mc_id=academic-89565-abartolo">配置和管理 Hyper-V</a><br>maybe have issue about <code>sudo dpkg -i nvim-linux64.deb</code> ==though it is not same step(it’s another way to install Neovim)==</li>
+<li> [Try] <a href="https://linuxize.com/post/how-to-install-pip-on-ubuntu-20.04/#:~:text=To%20install%20pip%20for%20Python%203%20on%20%3Cu%3EUbuntu%3C%2Fu%3E,verify%20the%20installation%20by%20checking%20the%20pip%20version%3A">How to Install Python Pip on Ubuntu 20.04</a></li>
+</ol>
+</li>
+</ol>
+</li>
+<li>install latest nvim<ol>
+<li>download appimage <a href="https://github.com/neovim/neovim/releases/nightly">nvim devolopment</a></li>
+<li>first of all, try to run this file<ol>
+<li>install requirement(on Ubuntu &gt;= 22.04)  <br> <code>sudo add-apt-repository universe</code>  <br> <code>sudo apt install libfuse2</code></li>
+<li><code>sudo chmod u+x nvim.appimage</code></li>
+<li><code>./nvim.appimage</code></li>
+</ol>
+</li>
+<li>move <code>nvim.appimage</code> to <code>nvim/</code><ul>
+<li><code>mv nvim.appimage ./nvim</code></li>
+</ul>
+</li>
+<li>change nvim directory to execute mode<ul>
+<li><code>sudo chmod +x nvim</code></li>
+</ul>
+</li>
+<li>i don’t know what’s meaning of this step<ul>
+<li><code>sudo chown root:root nvim</code></li>
+</ul>
+</li>
+<li>idk 2<ul>
+<li><code>sudo mv nvim /usr/bin</code></li>
+</ul>
+</li>
+</ol>
+</li>
+<li>install from source <a href="https://github.com/neovim/neovim/wiki/Building-Neovim#build-prerequisites">toturial</a><ol>
+<li>clone repo <code>git clone https://github.com/neovim/neovim</code></li>
+</ol>
+<ul>
+<li>==Issues==  <ol>
+<li><code>OpenSSL: error:0A00010B:SSL routines::wrong version number</code> <br><code>Unable to establish SSL connection.</code></li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+<ol start="3">
+<li>configuration step</li>
+<li>install packer</li>
+</ol>
+<ul>
+<li><p>Ubuntu command</p>
+<ol>
+<li><code>mv &lt;file name&gt; &lt;new name&gt;</code>   modified file name&#x20;</li>
+</ol>
+</li>
+<li><p><a href="https://linux.cn/article-12752-1.html">download files on linux</a></p>
+<ul>
+<li>use appimage file <a href="https://youtu.be/rHxgQ8c6H7k">youtube link</a></li>
+</ul>
+</li>
+</ul>
+<h3 id="about-windows"><a href="#about-windows" class="headerlink" title="about windows"></a>about windows</h3><ul>
+<li>install wget: <a href="https://eternallybored.org/misc/wget/">download Url</a><blockquote>
+<p>article： <a href="https://builtvisible.com/download-your-website-with-wget/">download-your-website-with-wget</a></p>
+</blockquote>
+</li>
+<li></li>
+</ul>
+<h3 id="about-ubuntu"><a href="#about-ubuntu" class="headerlink" title="about ubuntu"></a>about ubuntu</h3><ul>
+<li><p>wsl install</p>
+<ol>
+<li><a href="https://www.51cto.com/article/720323.html">如何在 Windows 上用 WSL 2 快速体验丝般顺滑的 Linux</a></li>
+</ol>
+<ul>
+<li>error:<ol>
+<li>couldn’t install ubuntu subsystem on window<ol>
+<li>fix: 控制面板-卸载程序-启用或关闭Windows功能， 两个功能<del>开关</del>重启一下<ul>
+<li><input disabled="" type="checkbox"> 适用于Linux的Windows子系统</li>
+<li><input disabled="" type="checkbox"> 虚拟机平台</li>
+</ul>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><p>input command didn’t display 终端命令不显示</p>
+<ul>
+<li>关闭输入回显 <code>stty -echo</code></li>
+<li>打开输入回显 <code>stty echo</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="about-node-npm"><a href="#about-node-npm" class="headerlink" title="about node, npm"></a>about node, npm</h3><ul>
+<li>knowledge<ol>
+<li><a href="https://www.freecodecamp.org/chinese/news/how-to-update-node-and-npm-to-the-latest-version/">如何将 Node 和 NPM 更新到最新版本</a></li>
+</ol>
+</li>
+<li>issue: <code>permmision denied npm</code><ul>
+<li>fix:<ol>
+<li><code>sudo npm install -g appium --allow-root</code></li>
+<li><code>sudo npm install -g appium --unsafe-perm=true --allow-root</code></li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="terminal-emulator"><a href="#terminal-emulator" class="headerlink" title="terminal emulator"></a>terminal emulator</h3><ul>
+<li><p>kitty</p>
+<ul>
+<li><p>error</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">aaron@Aaron:~$ kitty</span><br><span class="line">[079 22:57:35.657859] [glfw error 65542]: EGL: Library not found</span><br><span class="line">[079 22:57:35.659454] Traceback (most recent call last):</span><br><span class="line">File <span class="string">&quot;/usr/bin/../lib/kitty/kitty/main.py&quot;</span>, line 344, <span class="keyword">in</span> main</span><br><span class="line">  _main()</span><br><span class="line">File <span class="string">&quot;/usr/bin/../lib/kitty/kitty/main.py&quot;</span>, line 337, <span class="keyword">in</span> _main</span><br><span class="line">  run_app(opts, cli_opts, bad_lines)</span><br><span class="line">File <span class="string">&quot;/usr/bin/../lib/kitty/kitty/main.py&quot;</span>, line 183, <span class="keyword">in</span> __call__</span><br><span class="line">  _run_app(opts, args, bad_lines)</span><br><span class="line">File <span class="string">&quot;/usr/bin/../lib/kitty/kitty/main.py&quot;</span>, line 156, <span class="keyword">in</span> _run_app</span><br><span class="line">  window_id = create_os_window(</span><br><span class="line">ValueError: Failed to create GLFWwindow</span><br></pre></td></tr></table></figure></li>
+<li><p>fix: <code>sudo apt-get install libglfw3-dev libgles2-mesa-dev</code></p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="install-plugin"><a href="#install-plugin" class="headerlink" title="install plugin"></a>install plugin</h3><p><a href="https://youtu.be/w7i4amO_zaE">0 to LSP : Neovim RC From Scratch</a></p>
+<ul>
+<li>maybe have some problem over <code>$keymap$</code> setting, fix trying:<ul>
+<li>upgrade nvim version</li>
+</ul>
+</li>
+<li>error: <code>[mason-lspconfig.nvim] Server &quot;sumneko_lua&quot; is not a valid entry in ensure_installed. Make sure to only provide lspconfig server names.</code><ul>
+<li>fix:</li>
+</ul>
+</li>
+</ul>
+<p>配置加速下载</p>
+<ol>
+<li><a href="https://www.bilibili.com/read/cv16639595">neovim 插件管理器packer配置加速下载</a></li>
+</ol>
+<h4 id="packer-Plugins"><a href="#packer-Plugins" class="headerlink" title="packer/Plugins"></a>packer/Plugins</h4><ul>
+<li><strong>Error</strong><ol>
+<li><code>job.lua:94: Killing git due to timeout!</code></li>
+<li>fix: <code>sudo apt update</code></li>
+<li><code>couldn&#39;t find &#39;packer&#39; identifier</code></li>
+<li>fix: exit nvim, re-enter</li>
+</ol>
+</li>
+<li><strong>Install</strong><ol>
+<li>-treesitter playground* install <strong>failed</strong></li>
+<li>-telescope* installed</li>
+</ol>
+<ul>
+<li><input disabled="" type="checkbox"> how to set exploring range</li>
+</ul>
+3.</li>
+</ul>
+<h3 id="nvim-issue"><a href="#nvim-issue" class="headerlink" title="nvim issue"></a>nvim issue</h3><ul>
+<li><input checked="" disabled="" type="checkbox"> DONE: need to <strong>source</strong> all of files over every jump nvim in time<ul>
+<li>just follow <a href="https://neovim.io/doc/user/starting.html#initialization:~:text=7.%20Load%20user%20config%20(execute%20Ex%20commands%20from%20files%2C%20environment%2C%20%E2%80%A6).">official tutorial</a><blockquote>
+<p>  Unix                ~/.config/nvim/init.vim            (or init.lua)</p>
+<pre><code>Windows                ~/AppData/Local/nvim/init.vim    (or init.lua)
+$XDG_CONFIG_HOME      $XDG_CONFIG_HOME/nvim/init.vim    (or init.lua)
+</code></pre>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="git"><a href="#git" class="headerlink" title="git"></a>git</h3><ul>
+<li><p>error</p>
+<ul>
+<li><p><code>fatal: unable to access &#39;</code><a href="https://github.com/neovim/neovim/"><code>https://github.com/neovim/neovim/</code></a><code>&#39;: GnuTLS recv error (-110): The TLS connection was non-properly terminated</code></p>
+</li>
+<li><p>fix:</p>
+<ol>
+<li>[option] <code>git config --global http.proxy http://proxy.server.com:8080</code>, <code>git config --global https.proxy https://proxy.server.com:8080</code></li>
+<li><code>git config --global --unset http.proxy</code>, <code>git config --global --unset https.proxy</code></li>
+<li>then try to clone again</li>
+</ol>
+</li>
+<li><p>if speed too slow try to use this:</p>
+</li>
+<li><p><a href="https://gitclone.com/">git clone SPEEDUP 网达极客社区</a></p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="nvim-operate"><a href="#nvim-operate" class="headerlink" title="nvim operate"></a>nvim operate</h2><ul>
+<li><strong>copy paste</strong></li>
+<li>inside vim<ul>
+<li>copy: <code>y</code>, paste: <code>p</code></li>
+</ul>
+</li>
+<li>from outside to inside<ul>
+<li>copy(win): <code>Ctrl c</code>, paste: <code>&quot;+p</code></li>
+</ul>
+</li>
+<li>from inside to outside<ul>
+<li>copy: <code>&quot;+y</code>, paste(win): <code>Ctrl v</code></li>
+</ul>
+</li>
+<li><strong>replace</strong><ol>
+<li>slect statement</li>
+<li>type command <code>s/src/des/g</code>  /g means global(over select)</li>
+</ol>
+</li>
+</ul>
+<h3 id="with-files"><a href="#with-files" class="headerlink" title="with files"></a>with files</h3><ul>
+<li>open linux grep result files as nvim args<br><code>grep -rf &quot;&lt;grep-str&gt;&quot; . | xargs vim</code><blockquote>
+<p>value <code>f</code> is don’t display grep content</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="have-unnormal-symbol"><a href="#have-unnormal-symbol" class="headerlink" title="have unnormal symbol"></a>have unnormal symbol</h3><ul>
+<li><code>^M</code><ul>
+<li>regular expression(didn’t work)</li>
+<li><code>%s/^M//g</code></li>
+<li>change file encode type<ol>
+<li><code>e ++ff=dos</code></li>
+<li><code>set ff=unix</code></li>
+<li><code>wq</code></li>
+</ol>
+</li>
+</ul>
+</li>
+<li><strong>comment</strong> code block quickly<ol>
+<li>$visual line mode$<ol>
+<li>select the lines what you want to comment</li>
+<li><code>Shift-I</code> to insert comment symbol(‘–, //, $, #’)</li>
+<li>complete then press <code>Esc</code> twice to confirm</li>
+</ol>
+</li>
+<li>command $normal mode$<ol>
+<li><code>:[start_line],[end_line]s/^/--</code>  eg:<code>:10,15/^/--</code><del>(.lua)</del></li>
+</ol>
+</li>
+<li>regular expresion<ol>
+<li><code>:g/\while/s/^/#</code><del>(.py)</del></li>
+</ol>
+</li>
+</ol>
+</li>
+<li><strong>uncomment</strong><ol>
+<li>$visual mode$<ol>
+<li><code>Ctrl-v</code> select the comment symbol</li>
+<li>press <code>x</code> to remove that</li>
+</ol>
+</li>
+</ol>
+</li>
+</ul>
+<h2 id="cursor"><a href="#cursor" class="headerlink" title="cursor"></a>cursor</h2><table>
+<thead>
+<tr>
+<th>command/ hot keys</th>
+<th>function</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>vim .</code></td>
+<td>open directory tree</td>
+</tr>
+<tr>
+<td><strong>Move Cursor</strong></td>
+<td><strong>====================</strong></td>
+</tr>
+<tr>
+<td><code>f</code></td>
+<td>search -*f**orward</td>
+</tr>
+<tr>
+<td><code>;</code></td>
+<td>repeat forward last search</td>
+</tr>
+<tr>
+<td><code>,</code></td>
+<td>repeat back last search</td>
+</tr>
+<tr>
+<td><code>_</code>, <code>$$</code>, <code>0</code></td>
+<td>move cursor to <code>line first character</code>, <code>line tail</code>, <code>line begin</code></td>
+</tr>
+<tr>
+<td><code>\$</code> (under normal mode, no’\‘)</td>
+<td>create new file</td>
+</tr>
+<tr>
+<td><code>ci&lt;symbol pair&gt;</code></td>
+<td>eg:<code>ci(</code>will clear inside ‘()’ content and the cursor jump into</td>
+</tr>
+<tr>
+<td><code>V%</code></td>
+<td>jump to another pair(from open to close bracket etc…)</td>
+</tr>
+<tr>
+<td><code>q:</code></td>
+<td>open cmd history</td>
+</tr>
+<tr>
+<td><code>%</code>, <code>d</code></td>
+<td>create file, create directory</td>
+</tr>
+<tr>
+<td><strong>Telescope view</strong> <code>Alt h/j/k/l, i</code></td>
+<td>jump to <code>$Results$</code> window, jump back input label</td>
+</tr>
+<tr>
+<td><strong>File telescope</strong></td>
+<td></td>
+</tr>
+<tr>
+<td><code>&lt;C-o&gt;</code></td>
+<td>jump back last cursor position</td>
+</tr>
+<tr>
+<td><code>gx</code></td>
+<td>open/direct url link to your default browser</td>
+</tr>
+<tr>
+<td><code>args</code></td>
+<td>list the open files(buffers?)</td>
+</tr>
+</tbody></table>
+<h2 id="vim-config-file"><a href="#vim-config-file" class="headerlink" title="vim config file"></a>vim config file</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&quot; edit setting</span><br><span class="line">set tabstop=4  &quot; tab key contain space num</span><br><span class="line"></span><br><span class="line">&quot; showing setting</span><br><span class="line">set laststatus=2 &quot; always showing status bar</span><br><span class="line">set number   &quot; show line index</span><br><span class="line"></span><br><span class="line">set relativenumber &quot; show the relative line number</span><br><span class="line"></span><br><span class="line">&quot; ---------------------------------------------------------</span><br><span class="line"></span><br><span class="line">&quot; Use a line cursor within insert mode and a block cursor everywhere else.</span><br><span class="line">&quot;</span><br><span class="line">&quot; Reference chart of values:</span><br><span class="line">&quot;  Ps = 0 -&gt; blinking block.</span><br><span class="line">&quot;  Ps = 1 -&gt; blinking block (default).</span><br><span class="line">&quot;  Ps = 2 -&gt; steady block.</span><br><span class="line">&quot;  Ps = 3 -&gt; blinking underline.</span><br><span class="line">&quot;  Ps = 4 -&gt; steady underline.</span><br><span class="line">&quot;  Ps = 5 -&gt; blinking bar (xterm).</span><br><span class="line">&quot;  Ps = 6 -&gt; steady bar (xterm).</span><br><span class="line">let &amp;t_SI = &quot;\e[5 q&quot;</span><br><span class="line">let &amp;t_EI = &quot;\e[1 q&quot;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <tags>
+        <tag>Note</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>TypeScriptLearn</title>
+    <url>/%5Bobject%20Object%5D/2022/12/29/TypeScriptLearnundefined/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="Describe"><a href="#Describe" class="headerlink" title="Describe"></a>Describe</h2><p><a href="https://cloud.tencent.com/developer/article/1188631">TypeScript 简介</a>  </p>
+<h2 id="Independency"><a href="#Independency" class="headerlink" title="Independency"></a>Independency</h2><ul>
+<li>run TS file in vs-code<ol>
+<li>set-up packages<br><code>npm install -g typescript</code><br><code>npm install -g ts-node</code></li>
+<li>set-up code runner plug-in</li>
+<li>press play and enjoy it</li>
+</ol>
+</li>
+</ul>
+<h2 id="Grammer"><a href="#Grammer" class="headerlink" title="Grammer"></a>Grammer</h2><ul>
+<li><strong>关键字</strong> 下面语句会被赋值为什么类型？<br><code>const fullName: string = &#39;Dylan Israel&#39;;</code><ol>
+<li>Implicit ×</li>
+<li>Explicit √<blockquote>
+<p>参考：<a href="https://www.schibsted.pl/blog/typescript-type-inference/">typescript-type-inference</a></p>
+</blockquote>
+</li>
+</ol>
+</li>
+<li><strong>配置</strong> <code>noImplicitAny</code> 可以通过启用编译器选项来禁用隐式变量类型赋值<br>TODO figure out:<br>autoTypeAssignment = FALSE<br>noAutoType<br>Implicit = FALSE</li>
+<li><strong>类型</strong><br><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Inheritance_and_the_prototype_chain">继承和原型：Inheritance &amp; prototype</a>  <ul>
+<li><code>unknown</code> 类似于 ‘any’，但在不确定类型时更安全。<br>TODO figure out:<br>similar<br>never<br>unknown</li>
+<li>keyof 关键字可以与索引名一起使用来提取索引类型</li>
+<li><del>不能</del>可以为泛型分配默认值</li>
+<li>以下代码参数的类型是什么？<br><code>function ex(param1?: string)&#123;&#125;</code><br>-<code>unknown</code><br>-<code>string | null</code> <del>理解：null不是类型，是一个变量的状态</del><br>-<code>string</code><br>-<code>string | undefined</code> √</li>
+</ul>
+</li>
+<li><strong>类型别名</strong>通常与 <code>Strings</code> 类型一起使用</li>
+<li><strong>接口</strong>类似于类型别名，但仅适用于对象类型</li>
+<li><strong>枚举</strong>的两种类型是 <code>String</code> 与 <code>Number</code></li>
+<li>Definitely Typed 是最受欢迎的声明文件存储库<br>TypeScript 的正式名称<br>是使类型动态化的项目<del>(感觉这描述有问题)</del><ul>
+<li>JavaScript 是<em>类型动态化</em>的语言：类型动态化指的是只有在<del>运行</del>编译时才可以确定变量的数据类型<br>TypeScript 的超集 ×?</li>
+<li>TypeScript 是 JavaScript 的超集</li>
+</ul>
+</li>
+<li><strong>面向对象特性</strong><ul>
+<li>设置 protected 修饰符的属性和方法只允许在继承的类中使用？ ×<br>还可以在当前类使用</li>
+<li><code>override</code> 指内容重写，外壳相同，<br><code>overload</code> 指参数列表(参数类型、个数、返回类型)不同<blockquote>
+<p>参考： <a href="https://www.runoob.com/java/java-override-overload.html">override &amp; overload</a></p>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="Test"><a href="#Test" class="headerlink" title="Test"></a>Test</h2><ul>
+<li>TODO:<ul>
+<li>vs code for ts check is too strict: how to modified to <code>use strict</code> mode?</li>
+<li>隐式转换除了 <code>==</code>、<code>!!</code>也会出现在使用索引取数组元素嘛？<br><code>arr[10] = 0</code><br><code>arr[&#39;1&#39;] = 2</code> &lt;–here<br><code>alert(arr[1])</code> // equal 2</li>
+</ul>
+</li>
+</ul>
+<h2 id="Issue"><a href="#Issue" class="headerlink" title="Issue"></a>Issue</h2><p><a href="https://bobbyhadz.com/blog/typescript-this-implicitly-has-type-any">‘this’ implicitly has type ‘any’ error in TypeScript #</a></p>
+<h2 id="Code-Formatting"><a href="#Code-Formatting" class="headerlink" title="Code Formatting"></a>Code Formatting</h2><p><a href="https://mp.weixin.qq.com/s?__biz=Mzg3NTcwMTUzNA==&mid=2247486311&idx=1&sn=e673c558cde252bcd3357074fbf0a365&source=41">编写高质量可维护的代码：Awesome TypeScript</a></p>
+]]></content>
+      <tags>
+        <tag>Note</tag>
+        <tag>TypeScript</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Unity Note</title>
+    <url>/%5Bobject%20Object%5D/2022/11/02/UnityNoteundefined/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h2><h3 id="TODO"><a href="#TODO" class="headerlink" title="TODO"></a>TODO</h3><p>研究Unity Awake Start函数运行周期</p>
+<p>C#怎么像Lua那样定义全局变量</p>
+<figure class="highlight lua"><table><tr><td class="code"><pre><span class="line">sth.lua\\</span><br><span class="line"><span class="keyword">local</span> GF = <span class="built_in">require</span>(<span class="string">&quot;Global/Function&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">--- other file</span></span><br><span class="line">GF:sthFunction()  √</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c#"><table><tr><td class="code"><pre><span class="line">SceneController.cs\<span class="keyword">class</span> <span class="title">SceneController</span>\</span><br><span class="line"><span class="title">public</span> <span class="title">static</span> <span class="title">SCI</span> = SceneController.Instance;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> other file</span></span><br><span class="line">SCI.sthFunction();  ×</span><br></pre></td></tr></table></figure>
+
+<h3 id="C"><a href="#C" class="headerlink" title="C#"></a>C#</h3><p>switch to use upper scope<br><a href="https://learn.microsoft.com/zh-cn/dotnet/csharp/language-reference/keywords/this">Microsoft-Learn keywords-this</a></p>
+<h3 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h3><!-- <div class = "aplayer"  data-id = "000PeZCQ1i4XVs"  data-server = "tencent"  data-type = "artist"  data-mutex = "true"  data-preload = "auto"  data-theme = "#3F51B5"></div > -->
+
+<h4 id="Hierarchy"><a href="#Hierarchy" class="headerlink" title="Hierarchy"></a>Hierarchy</h4><h5 id="Mention"><a href="#Mention" class="headerlink" title="Mention"></a>Mention</h5><p><code>transform.Find(string childname)</code> 不能递归查找子节点</p>
+<ul>
+<li><code>Error: NullReferenceException: Object reference not set to an instance of an object</code><ul>
+<li>reason:<ol>
+<li>didn’t assign game object in Hierarchy/Inspector</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+<h5 id="Coordinate"><a href="#Coordinate" class="headerlink" title="Coordinate"></a>Coordinate</h5><p>如果父节点与子节点的<strong>缩放</strong>不一致（非等比缩放）时，子物体旋转会让缩放产生异常变化，因为基于非等比坐标系做出的变化，会导致子物体的位置、朝向计算错误。<br>如果对象的各个组件局部坐标系不一致，在执行某些旋转变换的时候会产生意料之外的变化。<strong>要注意统一</strong>  </p>
+<h5 id="Hot-key"><a href="#Hot-key" class="headerlink" title="Hot key"></a>Hot key</h5><p><code>Alt</code>+<code>Shift</code>+<code>A</code> 激活 gameObject 快捷键</p>
+<p><a href="https://blog.csdn.net/FifthGently/article/details/78363364">Unity常用[xxx]用法、特性</a></p>
+<h3 id="旋转-Rotation"><a href="#旋转-Rotation" class="headerlink" title="旋转 Rotation"></a>旋转 Rotation</h3><p><a href="https://taikr.com/article/3945">Unity transform.rotation和四元数的基本理解应用</a></p>
+<h3 id="Material-amp-Shader"><a href="#Material-amp-Shader" class="headerlink" title="Material &amp; Shader"></a>Material &amp; Shader</h3><h4 id="3D-Text"><a href="#3D-Text" class="headerlink" title="3D Text"></a>3D Text</h4><p>GUI/Text Shader是一种可以穿透的 shader，如果不想让3D文字穿透就得自己建一个shader来使用  </p>
+<blockquote>
+<p>这里<strong>需要注意</strong>的地方就是原始改颜色的位置已经不起作用了，因为已经替换了原始材质，所以需要改变自己新建的材质颜色  </p>
+</blockquote>
+<p><code>Shader Code:</code>  </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Shader &quot;Custom/NewSurfaceShader&quot;</span><br><span class="line">&#123;</span><br><span class="line">    // 变量属性</span><br><span class="line">    Properties</span><br><span class="line">    &#123;</span><br><span class="line">        _Color (&quot;Color&quot;, Color) = (1,1,1,1)</span><br><span class="line">        _MainTex (&quot;Albedo (RGB)&quot;, 2D) = &quot;white&quot; &#123;&#125;</span><br><span class="line">        // 只是命名不同，作用其实都相同</span><br><span class="line">        //_MainTex (&quot;Font Texture&quot;, 2D) = &quot;white&quot; &#123;&#125;</span><br><span class="line">        //_Color (&quot;Text Color&quot;, Color) = (1,1,1,1)</span><br><span class="line">    &#125;</span><br><span class="line">    SubShader</span><br><span class="line">    &#123;</span><br><span class="line">        Tags</span><br><span class="line">        &#123;</span><br><span class="line">            // TODO: understand</span><br><span class="line">            &quot;Queue&quot; = &quot;Geometry&quot;</span><br><span class="line">            //&quot;IgnoreProjector&quot;=&quot;True&quot; </span><br><span class="line">            //&quot;RenderType&quot;=&quot;Transparent&quot;</span><br><span class="line">        &#125;</span><br><span class="line">        // 表象理解：控制单面显示，像 Plane 一样</span><br><span class="line">        Lighting Off Cull Off ZWrite On Fog </span><br><span class="line">        &#123; </span><br><span class="line">            Mode Off</span><br><span class="line">        &#125;</span><br><span class="line">        // 字面解释：用1减去源 α 值，想要的字体就会显现出来</span><br><span class="line">        Blend SrcAlpha OneMinusSrcAlpha</span><br><span class="line">        Pass </span><br><span class="line">        &#123;</span><br><span class="line">            Color [_Color]</span><br><span class="line">            SetTexture [_MainTex] </span><br><span class="line">            &#123;</span><br><span class="line">                combine primary, texture * primary</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后搭配字体以及其自带的 Texture 来配置 material，其中shader属性选择自己新建的 <code>Custom/[NewSurfaceShader]</code></p>
+<h2 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h2><h3 id="GUI"><a href="#GUI" class="headerlink" title="GUI"></a>GUI</h3><p><a href="https://www.cnblogs.com/isayes/p/6370168.html">Unity UGUI 按钮绑定事件的 4 种方式</a></p>
+<ul>
+<li>UI can interactable Conditions:<ul>
+<li><code>Event System</code> Component over <code>InputModule</code><br>to receive device input message</li>
+<li><code>Graphic Raycaster</code> Component over <code>Canvas</code><br>to receive screen operating</li>
+</ul>
+</li>
+</ul>
+<p>脚本引用命名空间 UI和UIElement 不一样  </p>
+<p>当画布没有正对着相机时，对应上面的按钮之类的交互控件则不会被触发</p>
+<h3 id="DOTween"><a href="#DOTween" class="headerlink" title="DOTween"></a>DOTween</h3><p><strong>待查证：</strong><br><code>Sequence</code>对象好像只能作为函数作用域的变量，一旦提升到类域就不能用了<br><strong><del>结论：</del></strong><br>对象变量所处作用域没有关系，只是初始化的时间不对，<code>Sequence</code>初始化不能在 <code>Awake</code>、<code>Start</code>函数里面 ==至于为什么需要再探查一下== ，要在使用前一刻初始化。  </p>
+<h3 id="VR"><a href="#VR" class="headerlink" title="VR"></a>VR</h3><p>思考使用射线拖拽物体，因为射线本身只有三种激发状态，并没有持续状态在<a href="https://blog.csdn.net/Liu_ChangC/article/details/124816737?spm=1001.2101.3001.6650.10&utm_medium=distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~Rate-10-124816737-blog-124718564.pc_relevant_aa_2&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~Rate-10-124816737-blog-124718564.pc_relevant_aa_2&utm_relevant_index=11">Unity使用SteamVR2.0实现基本功能(瞬移,抓取物品,射线点击,UI交互等)</a>得到了使用一个<code>isActive</code>布尔变量来获得状态属性,但是行不通</p>
+<p>参考，了解了“append”脚本 <del>通俗说就是在不修改官方（SteamVR_LaserPointer）情况下添加功能</del><br><a href="https://blog.csdn.net/weixin_38484443/article/details/124718969?spm=1001.2101.3001.6650.6&utm_medium=distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~Rate-6-124718969-blog-124718564.pc_relevant_aa_2&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~Rate-6-124718969-blog-124718564.pc_relevant_aa_2&utm_relevant_index=7">SteamVR 2.x 手柄射线与3D物体交互（9）</a>  </p>
+<h2 id="Unity编译原理"><a href="#Unity编译原理" class="headerlink" title="Unity编译原理"></a>Unity编译原理</h2><p><a href="https://www.cnblogs.com/Jaysonhome/articles/13218403.html">Unity - 深度理解C# 的执行原理及Unity跨平台 - 笔记</a>  </p>
+<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">    编译成中间语言                                            运行它的虚拟机</span><br><span class="line">C# ---------------&gt; CIL(Common Intermidiate Language)||MCIL ---------------&gt; CLR(Common Language Runtime) &#125; 统称为 .Net Framework</span><br></pre></td></tr></table></figure>
+
+<h2 id="卡顿-BUG"><a href="#卡顿-BUG" class="headerlink" title="卡顿/BUG"></a>卡顿/BUG</h2><p>Error:  </p>
+<blockquote>
+<p><code>Not allowed to access vertices on mesh &#39;meshname&#39; (isReadable is false; Read/Write must be enabled in import settings</code></p>
+</blockquote>
+<p>A:<br>就是说需要把对应模型： Model-Meshes-Read/Write Enabled <strong>[x]</strong> 这个选项勾选就好了</p>
+<p>Error:  </p>
+<blockquote>
+<p><code>Asset database transaction committed twice!</code><br><code>Assertion failed on expression: &#39;errors == MDB_SUCCESS || errors == MDB_NOTFOUND&#39;</code>  </p>
+</blockquote>
+<p>A:（未尝试, 没有特别注意这个Bug 好像是重启项目之后就好了）<br>Unity Hub许可证到期了需要更新一下许可证  </p>
+<h3 id="UnityEngine"><a href="#UnityEngine" class="headerlink" title="UnityEngine"></a>UnityEngine</h3><h4 id="Spawn-object"><a href="#Spawn-object" class="headerlink" title="Spawn object"></a>Spawn object</h4><ul>
+<li><em>Issue：</em><ul>
+<li><code>Error: Cannot instantiate objects with a parent which is persistent. New object will be created without a parent.</code><ul>
+<li><strong>reason:</strong><code>GameObject newObj = Instantiate(prefab, pointTrans);</code>, the pointTrans is prefab</li>
+</ul>
+</li>
+<li><code>Error: Setting the parent of a transform which resides in a Prefab Asset is disabled to prevent data corruption</code><ul>
+<li><strong>reason:</strong><code>newObj.transform.parent = pointTrans</code>, the same- try to use prefab transform to be parent.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="莫名其妙的bug"><a href="#莫名其妙的bug" class="headerlink" title="莫名其妙的bug"></a>莫名其妙的bug</h3><p>场景中prefab中变量没有应用（apply）到Prefab中 Runtime 时，脚本里对应公布到 Inspector 的变量是未赋值状态，而且就算 Apply 场景中对象更新了 Inspector 里面的变量也一直是第一次改变（非初始状态）的状态</p>
+<h3 id="About-Build"><a href="#About-Build" class="headerlink" title="About Build"></a>About Build</h3><blockquote>
+<p><code>Shader error in &#39;VR/SpatialMapping/Wireframe&#39;: unrecognized identifier &#39;DEFAULT_UNITY_VERTEX_OUTPUT_STEREO_EYE_INDEX&#39; at line 38 (on gles3)</code></p>
+</blockquote>
+<p>solution:<br>双击错误后勾选Inspector面板 shader的 Preprocess only选项（不理解为什么）</p>
+<blockquote>
+<p>Internal build system error. Backend exited with code -1073740791.<br>tundra: error: Couldn’t launch process<br>errno: 2 (No such file or directory) GetLastError: 1455 (0x000005AF):  </p>
+</blockquote>
+<p>solution：</p>
+<ol>
+<li>重启Unity  </li>
+<li>删除<code>Library/</code> 下对应项目名的文件（未尝试）  </li>
+</ol>
+<h4 id="Alembic"><a href="#Alembic" class="headerlink" title="Alembic"></a>Alembic</h4><blockquote>
+<p><code>failed to load alembic at ../*.Project/Builds/*.Project_Data/StreamingAssets\Assets/.*.abc</code></p>
+</blockquote>
+<p><strong>A:</strong><br>因为Unity针对 Streaming Assets， 打包时需要单独的把资源放到 <code>StreamingAssets/..</code> 目录下。<br>Streaming Assets 是用以区别需要放到特殊目录的资源文件夹，比如<code>.abc</code>格式的资源，还有<a href="https://docs.unity3d.com/Manual/StreamingAssets.html">官方文档</a>中提到的在IOS设备中播放电影资源，就需要把对应的资源放到 <code>StreamingAssets/..</code> 目录下<br>同时这位<a href="https://github.com/JohannesDeml/UnityAlembicSpawningError">JohannesDeml</a>大佬也给出了解决Alembic相关问题的方案</p>
+<h3 id="About-Package"><a href="#About-Package" class="headerlink" title="About Package"></a>About Package</h3><blockquote>
+<p>错误 CS0234 命名空间“UnityEngine.XR”中不存在类型或命名空间名“Management”(是否缺少程序集引用?) Assembly-CSharp D:\Aaron\Proj\Metaverse_Project\MetaverseProject\Assets\HTC.UnityPlugin\VRModule\Modules\SteamVRv2Module.cs 18 活动</p>
+</blockquote>
+<p><strong>解决：</strong><br>在<code>Package Manager-Unity Registry</code>安装 <code>AR Fundation</code></p>
+<blockquote>
+<p>Cinemachine 相关错误<br>在<code>Package Manager-Unity Registry</code>安装 <code>Cinemachine</code></p>
+</blockquote>
+<hr>
+<blockquote>
+<p>偶尔UnityEditor出现未响应的情况，只能强制结束，重启后发现一直进不去，但后台进程是有Unity.exe的。<br>Internal build system error. Backend exited with code -1073741819.  </p>
+</blockquote>
+<p><strong>解决方案：</strong><br>删除以下文件夹，重启Unity<br>C:\Users\用户名\AppData\Local\Unity<br>C:\Users\用户名\AppData\LocalLow\Unity<br><del>理解:应该是把缓存清理一下就好了</del></p>
+<hr>
+<h3 id="About-XR"><a href="#About-XR" class="headerlink" title="About XR"></a>About XR</h3><blockquote>
+<p>InvalidOperationException: You are trying to read Input using the UnityEngine.Input class, but you have switched active Input handling to Input System package in Player Settings.  </p>
+</blockquote>
+<p><strong>解决办法：</strong><br>setting-&gt;player-&gt;Active Input Handling[both]  </p>
+<blockquote>
+<p>开启VR  </p>
+</blockquote>
+<p>Project Setting-&gt;XR Plug-in Management-&gt;勾选OpenXR &amp;&amp; [OpenVR Loader]  </p>
+<p>OpenVR-&gt;Application Type==Scene<br><del>这里如果是Display就会进入VR的黑色世界</del>  </p>
+<h3 id="脚本"><a href="#脚本" class="headerlink" title="脚本"></a>脚本</h3><p><a href="https://blog.csdn.net/zhanghongjie0302/article/details/38875865">论C#如何实现多继承</a>  </p>
+<p><strong>Tip：</strong> 删除不必要的事件函数。如果有空函数建议删除，因为在编译器执行空函数时也会消耗CPU的性能  </p>
+<blockquote>
+<p>如果脚本出现错误，Unity 编辑器会因为检查到出错而<strong>无法进入运行模式</strong>，这时可以在项目视图中新建文件夹 WebplayerTemplates，然后将出错的脚本拖入此文件夹下，所有位于该文件夹下的文件都会被识别为一般文件从而<strong>不会被当作脚本编译</strong>，这样就可以运行游戏了。</p>
+</blockquote>
+<p><a href="https://blog.csdn.net/FifthGently/article/details/78363364">Unity常用[xxx]用法、特性</a></p>
+<ul>
+<li>C#脚本代码不执行<ol>
+<li>对象没有绑定对应C#脚本，<strong>可能是脚本名称和里面类的名称不一致</strong>，导致的“脚本脱落”</li>
+</ol>
+</li>
+<li>射线检测  </li>
+</ul>
+<figure class="highlight c#"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (Input.GetMouseButtonDown(<span class="number">0</span>))</span><br><span class="line">&#123;</span><br><span class="line">    ray = Camera.main.ScreenPointToRay(Input.mousePosition);</span><br><span class="line">    <span class="keyword">if</span> (Physics.Raycast(ray, <span class="keyword">out</span> hit))<span class="comment">//使用默认射线长度和其他默认参数</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//Debug.DrawLine(transform.position, hitInfo.point, Color.yellow);</span></span><br><span class="line">        Debug.DrawRay(ray.origin, hit.point, Color.green);</span><br><span class="line">        <span class="keyword">var</span> other = hit.collider.GetComponent&lt;VideoScreen&gt;();</span><br><span class="line">        <span class="keyword">if</span> (other)</span><br><span class="line">        &#123;</span><br><span class="line">            TriggerPlay();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="坐标"><a href="#坐标" class="headerlink" title="坐标"></a>坐标</h4><p>局部坐标转世界坐标 Transform.TransformPoint(Vector3);</p>
+<h3 id="音效"><a href="#音效" class="headerlink" title="音效"></a>音效</h3><p><del>衰减的计算方式</del> <del>移到TODO</del>  </p>
+<h3 id="文件"><a href="#文件" class="headerlink" title="文件"></a>文件</h3><p>刚开始出现了图片比例被扭曲了，<strong>不知道</strong>怎么解决，但是通过将图片直接导入Unity<em>误打误撞</em>了解到了Unity对导入图片的格式要求（1:1, 1:2, 2:1）</p>
+<ul>
+<li>加载文件夹的文件到Unity  <ul>
+<li><code>var texture = Resources.Load(texPath) as Texture;</code>  <blockquote>
+<p>有限制，必须在<code>Resources</code>文件目录下</p>
+</blockquote>
+</li>
+<li>使用文件流</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight c#"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 将文件转化为二进制形式重构（自己理解）</span></span><br><span class="line">FileStream fileStream = <span class="keyword">new</span>     FileStream(texPath, FileMode.Open,     FileAccess.Read);</span><br><span class="line"></span><br><span class="line"><span class="built_in">byte</span>[] bytes = <span class="keyword">new</span>     <span class="built_in">byte</span>[fileStream.Length];</span><br><span class="line"><span class="comment">// 可以理解成复制吧</span></span><br><span class="line">fileStream.Read(bytes, <span class="number">0</span>,     (<span class="built_in">int</span>)fileStream.Length);</span><br><span class="line"><span class="comment">// 或许是文件流的正确操作流程?</span></span><br><span class="line">fileStream.Close();</span><br><span class="line"><span class="comment">// 文件流释放</span></span><br><span class="line">fileStream.Dispose();</span><br><span class="line"><span class="comment">// 设置图片大小</span></span><br><span class="line"><span class="built_in">int</span> width = <span class="number">400</span>;</span><br><span class="line"><span class="built_in">int</span> height = <span class="number">400</span>;</span><br><span class="line"><span class="comment">// 创建texture2D</span></span><br><span class="line">Texture2D texture = <span class="keyword">new</span> Texture2D(width, height);</span><br><span class="line"><span class="comment">// 加载图片流</span></span><br><span class="line">texture.LoadImage(bytes);</span><br><span class="line"><span class="comment">// 将材质的第一个贴图重新赋值</span></span><br><span class="line">mat.mainTexture = texture;</span><br></pre></td></tr></table></figure>
+
+<p><a href="https://www.dounaite.com/article/628d1d41f8519f4c0cd325e9.html">unity 动态加载本地图片及排版功能</a>  </p>
+<hr>
+<!-- inline music plugin -->
+<!-- <div class = "aplayer no-destroy" data-id = "60198" data-server = "netease" data-type = "playlist" data-fixed = "true" data-autoplay = "true"></div > -->
+]]></content>
+      <tags>
+        <tag>Note</tag>
+        <tag>Unity</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hello World</title>
+    <url>/%5Bobject%20Object%5D/2021/10/10/hello-worldundefined/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
+  </entry>
+</search>
